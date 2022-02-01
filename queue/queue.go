@@ -23,6 +23,9 @@ func (q *queue) Enqueue(item interface{}) {
 }
 
 func (q *queue) Dequeue() interface{} {
+	if q.Length() == 0 {
+		return nil
+	}
 	item := q.list.Get(q.list.Length() - 1)
 	q.list.RemoveAt(q.list.Length() - 1)
 	return item
