@@ -1,7 +1,9 @@
+//go:build go1.18
+
 package list_test
 
 import (
-	"github.com/patrickhuber/go-collections/list"
+	"github.com/patrickhuber/go-collections/generic/list"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -13,7 +15,7 @@ var _ = Describe("List", func() {
 		Expect(list.Length()).To(Equal(4))
 	})
 	It("can append", func() {
-		list := list.New()
+		list := list.New[int]()
 		list.Append(1)
 		Expect(list.Length()).To(Equal(1))
 		Expect(list.Get(0)).To(Equal(1))
@@ -51,8 +53,8 @@ var _ = Describe("List", func() {
 	It("can run foreach", func() {
 		list := list.New(1, 2, 3, 4, 5)
 		sum := 0
-		list.ForEach(func(item interface{}) {
-			sum += item.(int)
+		list.ForEach(func(item int) {
+			sum += item
 		})
 		Expect(sum).To(Equal(15))
 	})

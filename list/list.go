@@ -19,12 +19,12 @@ type List interface {
 }
 
 type list struct {
-	values []interface{}
+	items []interface{}
 }
 
 func New(items ...interface{}) List {
 	return &list{
-		values: items,
+		items: items,
 	}
 }
 
@@ -33,19 +33,19 @@ func NewReadOnly(items ...interface{}) ReadOnlyList {
 }
 
 func (l *list) Length() int {
-	return len(l.values)
+	return len(l.items)
 }
 
 func (l *list) Get(index int) interface{} {
-	return l.values[index]
+	return l.items[index]
 }
 
 func (l *list) Set(index int, value interface{}) {
-	l.values[index] = value
+	l.items[index] = value
 }
 
 func (l *list) Append(item interface{}) {
-	l.values = append(l.values, item)
+	l.items = append(l.items, item)
 }
 
 func (l *list) Insert(index int, item interface{}) {
@@ -53,12 +53,12 @@ func (l *list) Insert(index int, item interface{}) {
 		l.Append(item)
 		return
 	}
-	l.values = append(l.values[:index+1], l.values[index:]...)
-	l.values[index] = item
+	l.items = append(l.items[:index+1], l.items[index:]...)
+	l.items[index] = item
 }
 
 func (l *list) IndexOf(item interface{}) int {
-	for index, value := range l.values {
+	for index, value := range l.items {
 		if value == item {
 			return index
 		}
@@ -76,17 +76,17 @@ func (l *list) Remove(item interface{}) {
 }
 
 func (l *list) RemoveAt(index int) {
-	copy(l.values[index:], l.values[index+1:]) // Shift a[i+1:] left one index.
-	l.values[len(l.values)-1] = nil            // Erase last element (write zero value).
-	l.values = l.values[:len(l.values)-1]      // Truncate slice.
+	copy(l.items[index:], l.items[index+1:]) // Shift a[i+1:] left one index.
+	l.items[len(l.items)-1] = nil            // Erase last element (write zero value).
+	l.items = l.items[:len(l.items)-1]      // Truncate slice.
 }
 
 func (l *list) Clear() {
-	l.values = nil
+	l.items = nil
 }
 
 func (l *list) ForEach(action func(item interface{})) {
-	for _, item := range l.values {
+	for _, item := range l.items {
 		action(item)
 	}
 }
