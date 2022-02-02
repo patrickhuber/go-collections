@@ -60,3 +60,18 @@ func queue(){
     }
 }
 ```
+
+## Dictionary
+
+```go
+import "github.com/patrickhuber/go-collections/dictionary"
+
+func dict(){
+    d := dictionary.New()
+    d.Set("test", "a")
+    d.Set("other", "b")
+    _ := d.Get("test")
+    d.Remove("other")
+    d.Clear()
+}
+```

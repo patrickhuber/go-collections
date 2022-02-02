@@ -65,4 +65,11 @@ var _ = Describe("Dictionary", func() {
 			})
 		})
 	})
+	It("can remove", func() {
+		d := dictionary.New()
+		d.Set("test", "1")
+		d.Set("other", "2")
+		d.Remove("other")
+		Expect(d.Length()).To(Equal(1))
+	})
 })

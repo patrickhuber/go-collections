@@ -1,14 +1,20 @@
 package dictionary
 
-type Dictionary interface {
+type ReadOnlyDictionary interface {
 	Get(key interface{}) interface{}
 	Lookup(key interface{}) (interface{}, bool)
-	Set(key interface{}, value interface{})
 	Length() int
-	Clear()
 	Keys() []interface{}
 	Values() []interface{}
 }
+
+type Dictionary interface {
+	ReadOnlyDictionary
+	Set(key interface{}, value interface{})
+	Clear()
+	Remove(key interface{})
+}
+
 type dictionary struct {
 	values map[interface{}]interface{}
 }
@@ -30,6 +36,10 @@ func (d *dictionary) Lookup(key interface{}) (interface{}, bool) {
 
 func (d *dictionary) Set(key interface{}, value interface{}) {
 	d.values[key] = value
+}
+
+func (d *dictionary) Remove(key interface{}) {
+	delete(d.values, key)
 }
 
 func (d *dictionary) Length() int {
