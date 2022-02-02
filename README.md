@@ -26,7 +26,7 @@ func lister(){
 ## Stack
 
 ```go
-import "github.com/patrickhuber/go-collections/list"
+import "github.com/patrickhuber/go-collections/stack"
 
 func stacker(){
     s := stack.New()
@@ -45,7 +45,7 @@ func stacker(){
 ## Queue
 
 ```go
-import "github.com/patrickhuber/go-collections/list"
+import "github.com/patrickhuber/go-collections/queue"
 
 func queue(){
     q := queue.New()
