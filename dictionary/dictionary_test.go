@@ -44,4 +44,25 @@ var _ = Describe("Dictionary", func() {
 		d.Clear()
 		Expect(d.Length()).To(Equal(0))
 	})
+	Describe("Lookup", func() {
+		When("missing", func() {
+			It("returns false", func() {
+				d := dictionary.New()
+				d.Set("test", "1")
+				d.Set("other", "2")
+				_, ok := d.Lookup("hello")
+				Expect(ok).To(BeFalse())
+			})
+		})
+		When("present", func() {
+			It("can lookup", func() {
+				d := dictionary.New()
+				d.Set("test", "1")
+				d.Set("other", "2")
+				value, ok := d.Lookup("test")
+				Expect(ok).To(BeTrue())
+				Expect(value).To(Equal("1"))
+			})
+		})
+	})
 })

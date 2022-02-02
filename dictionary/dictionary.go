@@ -1,8 +1,9 @@
 package dictionary
 
 type Dictionary interface {
-	Get(interface{}) interface{}
-	Set(interface{}, interface{})
+	Get(key interface{}) interface{}
+	Lookup(key interface{}) (interface{}, bool)
+	Set(key interface{}, value interface{})
 	Length() int
 	Clear()
 	Keys() []interface{}
@@ -20,6 +21,11 @@ func New() Dictionary {
 
 func (d *dictionary) Get(key interface{}) interface{} {
 	return d.values[key]
+}
+
+func (d *dictionary) Lookup(key interface{}) (interface{}, bool) {
+	value, ok := d.values[key]
+	return value, ok
 }
 
 func (d *dictionary) Set(key interface{}, value interface{}) {
