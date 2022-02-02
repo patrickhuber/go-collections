@@ -13,8 +13,8 @@ type ReadOnlyList[T comparable] interface {
 type List[T comparable] interface {
 	ReadOnlyList[T]
 	Set(index int, item T)
-	Append(value T)
-	Insert(index int, value T)
+	Append(item T)
+	Insert(index int, item T)
 	Remove(T)
 	RemoveAt(index int)
 	Clear()
@@ -38,8 +38,8 @@ func (l *list[T]) Get(index int) T {
 	return l.items[index]
 }
 
-func (l *list[T]) Set(index int, value T) {
-	l.items[index] = value
+func (l *list[T]) Set(index int, item T) {
+	l.items[index] = item
 }
 
 func (l *list[T]) Append(item T) {
