@@ -78,7 +78,7 @@ func (l *list) Remove(item interface{}) {
 func (l *list) RemoveAt(index int) {
 	copy(l.items[index:], l.items[index+1:]) // Shift a[i+1:] left one index.
 	l.items[len(l.items)-1] = nil            // Erase last element (write zero value).
-	l.items = l.items[:len(l.items)-1]      // Truncate slice.
+	l.items = l.items[:len(l.items)-1]       // Truncate slice.
 }
 
 func (l *list) Clear() {
