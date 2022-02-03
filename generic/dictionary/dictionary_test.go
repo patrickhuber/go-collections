@@ -84,4 +84,12 @@ var _ = Describe("Dictionary", func() {
 		d.Remove("other")
 		Expect(d.Length()).To(Equal(1))
 	})
+	Describe("New", func() {
+		It("can take list of kvp", func() {
+			d := dictionary.NewWithMap(map[string]int{
+				"test": 1,
+			})
+			Expect(d.Get("test")).To(Equal(1))
+		})
+	})
 })

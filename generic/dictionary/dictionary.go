@@ -27,6 +27,16 @@ func New[TKey comparable, TValue any]() Dictionary[TKey, TValue] {
 	}
 }
 
+func NewWithMap[TKey comparable, TValue any](m map[TKey]TValue) Dictionary[TKey, TValue] {
+	cpy := map[TKey]TValue{}
+	for k, v := range m {
+		cpy[k] = v
+	}
+	return &dictionary[TKey, TValue]{
+		items: cpy,
+	}
+}
+
 func (d *dictionary[TKey, TValue]) Get(key TKey) TValue {
 	return d.items[key]
 }
