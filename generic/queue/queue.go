@@ -4,17 +4,17 @@ package queue
 
 import "github.com/patrickhuber/go-collections/generic/list"
 
-type Queue[T comparable] interface {
+type Queue[T any] interface {
 	Enqueue(T)
 	Dequeue() T
 	Length() int
 }
 
-type queue[T comparable] struct {
+type queue[T any] struct {
 	list list.List[T]
 }
 
-func New[T comparable]() Queue[T] {
+func New[T any]() Queue[T] {
 	return &queue[T]{
 		list: list.New[T](),
 	}

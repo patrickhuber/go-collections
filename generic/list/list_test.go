@@ -9,6 +9,38 @@ import (
 	. "github.com/onsi/gomega"
 )
 
+type S struct {
+	A string
+}
+
+func (s *S) FuncA() string {
+	return s.A
+}
+
+func (s *S) Equal(other any) bool {
+	if s == nil && other == nil {
+		return true
+	}
+	if other == nil {
+		return false
+	}
+	right, ok := other.(SI)
+	if !ok {
+		return false
+	}
+	return right.FuncA() == s.A
+}
+
+type SI interface {
+	FuncA() string
+}
+
+func NewSI(a string) SI {
+	return &S{
+		A: a,
+	}
+}
+
 var _ = Describe("List", func() {
 	It("can create", func() {
 		list := list.New(1, 2, 3, 4)
@@ -68,5 +100,18 @@ var _ = Describe("List", func() {
 		list.Set(0, 10)
 		item := list.Get(0)
 		Expect(item).To(Equal(10))
+	})
+	When("interface", func() {
+		It("can create", func() {
+			list := list.New(NewSI("test"))
+			Expect(list).ToNot(BeNil())
+			Expect(list.Length()).To(Equal(1))
+			Expect(list.Get(0)).To(Not(BeNil()))
+		})
+		It("can check equality", func() {
+			list := list.New(NewSI("test"))
+			other := NewSI("test")
+			Expect(list.Contains(other)).To(BeTrue())
+		})
 	})
 })

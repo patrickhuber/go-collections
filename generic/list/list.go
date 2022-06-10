@@ -2,7 +2,9 @@
 
 package list
 
-type ReadOnlyList[T comparable] interface {
+import "github.com/patrickhuber/go-collections/object"
+
+type ReadOnlyList[T any] interface {
 	Get(index int) T
 	Length() int
 	IndexOf(item T) int
@@ -10,7 +12,7 @@ type ReadOnlyList[T comparable] interface {
 	ForEach(func(T))
 }
 
-type List[T comparable] interface {
+type List[T any] interface {
 	ReadOnlyList[T]
 	Set(index int, item T)
 	Append(item T)
@@ -20,11 +22,11 @@ type List[T comparable] interface {
 	Clear()
 }
 
-type list[T comparable] struct {
+type list[T any] struct {
 	items []T
 }
 
-func New[T comparable](items ...T) List[T] {
+func New[T any](items ...T) List[T] {
 	return &list[T]{
 		items: items,
 	}
@@ -57,7 +59,7 @@ func (l *list[T]) Insert(index int, item T) {
 
 func (l *list[T]) IndexOf(item T) int {
 	for index, value := range l.items {
-		if value == item {
+		if object.Equal(value, item) {
 			return index
 		}
 	}

@@ -1,5 +1,7 @@
 package list
 
+import "github.com/patrickhuber/go-collections/object"
+
 type ReadOnlyList interface {
 	Get(index int) interface{}
 	Contains(item interface{}) bool
@@ -59,7 +61,7 @@ func (l *list) Insert(index int, item interface{}) {
 
 func (l *list) IndexOf(item interface{}) int {
 	for index, value := range l.items {
-		if value == item {
+		if object.Equal(value, item) {
 			return index
 		}
 	}

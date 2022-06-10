@@ -4,17 +4,17 @@ package stack
 
 import "github.com/patrickhuber/go-collections/generic/list"
 
-type Stack[T comparable] interface {
+type Stack[T any] interface {
 	Push(T)
 	Pop() T
 	Length() int
 }
 
-type stack[T comparable] struct {
+type stack[T any] struct {
 	list list.List[T]
 }
 
-func New[T comparable]() Stack[T] {
+func New[T any]() Stack[T] {
 	return &stack[T]{
 		list: list.New[T](),
 	}
