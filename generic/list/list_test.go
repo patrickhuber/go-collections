@@ -3,10 +3,10 @@
 package list_test
 
 import (
-	"github.com/patrickhuber/go-collections/generic/list"
+	"testing"
 
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/patrickhuber/go-collections/generic/list"
+	"github.com/stretchr/testify/require"
 )
 
 type S struct {
@@ -41,77 +41,73 @@ func NewSI(a string) SI {
 	}
 }
 
-var _ = Describe("List", func() {
-	It("can create", func() {
+func TestList(t *testing.T) {
+	t.Run("create", func(t *testing.T) {
 		list := list.New(1, 2, 3, 4)
-		Expect(list.Length()).To(Equal(4))
+		require.Equal(t, 4, list.Length())
 	})
-	It("can append", func() {
+	t.Run("append", func(t *testing.T) {
 		list := list.New[int]()
 		list.Append(1)
-		Expect(list.Length()).To(Equal(1))
-		Expect(list.Get(0)).To(Equal(1))
+		require.Equal(t, 1, list.Length())
+		require.Equal(t, 1, list.Get(0))
 	})
-	It("can remove", func() {
+	t.Run("remove", func(t *testing.T) {
 		list := list.New(1, 3, 4, 5)
 		list.Remove(4)
-		Expect(list.Length()).To(Equal(3))
-		Expect(list.Get(0)).To(Equal(1))
-		Expect(list.Get(1)).To(Equal(3))
-		Expect(list.Get(2)).To(Equal(5))
+		require.Equal(t, 3, list.Length())
+		require.Equal(t, 1, list.Get(0))
+		require.Equal(t, 3, list.Get(1))
+		require.Equal(t, 5, list.Get(2))
 	})
-	It("can clear", func() {
+	t.Run("clear", func(t *testing.T) {
 		list := list.New(1, 3, 4, 5)
 		list.Clear()
-		Expect(list.Length()).To(Equal(0))
+		require.Equal(t, 0, list.Length())
 	})
-	When("item in list", func() {
-		It("returns true", func() {
-			list := list.New(1, 2, 3, 4, 5, 6)
-			Expect(list.Contains(3)).To(BeTrue())
-		})
+	t.Run("contains", func(t *testing.T) {
+		list := list.New(1, 2, 3, 4, 5, 6)
+		require.True(t, list.Contains(3))
 	})
-	When("item missing", func() {
-		It("returns false", func() {
-			list := list.New(1, 2, 3, 4, 5, 6)
-			Expect(list.Contains(10)).To(BeFalse())
-		})
+	t.Run("missing", func(t *testing.T) {
+		list := list.New(1, 2, 3, 4, 5, 6)
+		require.False(t, list.Contains(10))
 	})
-	It("can return indexof", func() {
+	t.Run("indexof", func(t *testing.T) {
 		list := list.New(1, 2, 3, 4, 5)
 		index := list.IndexOf(2)
-		Expect(index).To(Equal(1))
+		require.Equal(t, 1, index)
 	})
-	It("can run foreach", func() {
+	t.Run("foreach", func(t *testing.T) {
 		list := list.New(1, 2, 3, 4, 5)
 		sum := 0
 		list.ForEach(func(item int) {
 			sum += item
 		})
-		Expect(sum).To(Equal(15))
+		require.Equal(t, 15, sum)
 	})
-	It("can get", func() {
+	t.Run("get", func(t *testing.T) {
+
 		list := list.New(1, 3, 4, 5, 6)
 		item := list.Get(3)
-		Expect(item).To(Equal(5))
+		require.Equal(t, 5, item)
 	})
-	It("can set", func() {
+	t.Run("set", func(t *testing.T) {
+
 		list := list.New(1, 3, 4, 5, 6)
 		list.Set(0, 10)
 		item := list.Get(0)
-		Expect(item).To(Equal(10))
+		require.Equal(t, 10, item)
 	})
-	When("interface", func() {
-		It("can create", func() {
-			list := list.New(NewSI("test"))
-			Expect(list).ToNot(BeNil())
-			Expect(list.Length()).To(Equal(1))
-			Expect(list.Get(0)).To(Not(BeNil()))
-		})
-		It("can check equality", func() {
-			list := list.New(NewSI("test"))
-			other := NewSI("test")
-			Expect(list.Contains(other)).To(BeTrue())
-		})
+	t.Run("new", func(t *testing.T) {
+		list := list.New(NewSI("test"))
+		require.NotNil(t, list)
+		require.Equal(t, 1, list.Length())
+		require.NotNil(t, list.Get(0))
 	})
-})
+	t.Run("equality", func(t *testing.T) {
+		list := list.New(NewSI("test"))
+		other := NewSI("test")
+		require.True(t, list.Contains(other))
+	})
+}

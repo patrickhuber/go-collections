@@ -3,30 +3,33 @@
 package stack_test
 
 import (
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"testing"
+
+	"github.com/stretchr/testify/require"
 
 	"github.com/patrickhuber/go-collections/stack"
 )
 
-var _ = Describe("Stack", func() {
-	It("can push", func() {
+func TestStack(t *testing.T) {
+	t.Run("push", func(t *testing.T) {
 		s := stack.New()
 		s.Push(1)
-		Expect(s.Length()).To(Equal(1))
+		require.Equal(t, 1, s.Length())
 	})
-	It("can pop", func() {
+
+	t.Run("pop", func(t *testing.T) {
 		s := stack.New()
 		s.Push(1)
-		Expect(s.Pop()).To(Equal(1))
+		require.Equal(t, 1, s.Pop())
 	})
-	It("can reverse", func() {
+
+	t.Run("reverse", func(t *testing.T) {
 		s := stack.New()
 		for i := 0; i < 5; i++ {
 			s.Push(i)
 		}
 		for i := 4; i >= 0; i-- {
-			Expect(s.Pop()).To(Equal(i))
+			require.Equal(t, i, s.Pop())
 		}
 	})
-})
+}

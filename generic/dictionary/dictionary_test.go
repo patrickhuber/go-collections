@@ -3,93 +3,90 @@
 package dictionary_test
 
 import (
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"testing"
+
+	"github.com/stretchr/testify/require"
 
 	"github.com/patrickhuber/go-collections/generic/dictionary"
 )
 
-var _ = Describe("Dictionary", func() {
-	It("can set", func() {
+func TestDictionary(t *testing.T) {
+	t.Run("set", func(t *testing.T) {
 		d := dictionary.New[string, int]()
 		d.Set("test", 1)
-		Expect(d.Length()).To(Equal(1))
+		require.Equal(t, 1, d.Length())
 	})
-	It("can get", func() {
+	t.Run("get", func(t *testing.T) {
 		d := dictionary.New[string, int]()
 		d.Set("test", 1)
 		value := d.Get("test")
-		Expect(value).To(Equal(1))
+		require.Equal(t, 1, value)
 	})
-	It("can list keys", func() {
+	t.Run("list_keys", func(t *testing.T) {
 		d := dictionary.New[string, int]()
 		d.Set("test", 1)
 		d.Set("other", 2)
 		keys := d.Keys()
-		Expect(len(keys)).To(Equal(2))
+		require.Equal(t, 2, len(keys))
+
 		if keys[0] == "test" {
-			Expect(keys[1]).To(Equal("other"))
+			require.Equal(t, "other", keys[1])
 		} else if keys[0] == "other" {
-			Expect(keys[1]).To(Equal("test"))
+			require.Equal(t, "test", keys[1])
 		} else {
-			Fail("unknown key")
+			t.Fatalf("unknown key")
 		}
 	})
-	It("can list values", func() {
+	t.Run("list_values", func(t *testing.T) {
 		d := dictionary.New[string, string]()
 		d.Set("test", "1")
 		d.Set("other", "2")
 		values := d.Values()
-		Expect(len(values)).To(Equal(2))
+		require.Equal(t, 2, len(values))
+
 		if values[0] == "1" {
-			Expect(values[1]).To(Equal("2"))
+			require.Equal(t, "2", values[1])
 		} else if values[0] == "2" {
-			Expect(values[1]).To(Equal("1"))
+			require.Equal(t, "1", values[1])
 		} else {
-			Fail("unknown value")
+			t.Fatalf("unknown value")
 		}
 	})
-	It("can clear", func() {
+	t.Run("clear", func(t *testing.T) {
 		d := dictionary.New[string, int]()
 		d.Set("test", 1)
 		d.Set("other", 2)
 		d.Clear()
-		Expect(d.Length()).To(Equal(0))
+		require.Equal(t, 0, d.Length())
 	})
-	Describe("Lookup", func() {
-		When("missing", func() {
-			It("returns false", func() {
-				d := dictionary.New[string, string]()
-				d.Set("test", "1")
-				d.Set("other", "2")
-				_, ok := d.Lookup("hello")
-				Expect(ok).To(BeFalse())
-			})
-		})
-		When("present", func() {
-			It("can lookup", func() {
-				d := dictionary.New[string, string]()
-				d.Set("test", "1")
-				d.Set("other", "2")
-				value, ok := d.Lookup("test")
-				Expect(ok).To(BeTrue())
-				Expect(value).To(Equal("1"))
-			})
-		})
+	t.Run("lookup_missing", func(t *testing.T) {
+		d := dictionary.New[string, string]()
+		d.Set("test", "1")
+		d.Set("other", "2")
+		_, ok := d.Lookup("hello")
+		require.False(t, ok)
 	})
-	It("can remove", func() {
+
+	t.Run("lookup_present", func(t *testing.T) {
+		d := dictionary.New[string, string]()
+		d.Set("test", "1")
+		d.Set("other", "2")
+		value, ok := d.Lookup("test")
+		require.True(t, ok)
+		require.Equal(t, "1", value)
+	})
+
+	t.Run("remove", func(t *testing.T) {
 		d := dictionary.New[string, string]()
 		d.Set("test", "1")
 		d.Set("other", "2")
 		d.Remove("other")
-		Expect(d.Length()).To(Equal(1))
+		require.Equal(t, 1, d.Length())
 	})
-	Describe("New", func() {
-		It("can take list of kvp", func() {
-			d := dictionary.NewWithMap(map[string]int{
-				"test": 1,
-			})
-			Expect(d.Get("test")).To(Equal(1))
+	t.Run("new", func(t *testing.T) {
+		d := dictionary.NewWithMap(map[string]int{
+			"test": 1,
 		})
+		require.Equal(t, 1, d.Get("test"))
 	})
-})
+}

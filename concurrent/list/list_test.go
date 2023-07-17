@@ -1,70 +1,72 @@
 package list_test
 
 import (
-	"github.com/patrickhuber/go-collections/concurrent/list"
+	"testing"
 
-	. "github.com/onsi/ginkgo/v2"
-	. "github.com/onsi/gomega"
+	"github.com/patrickhuber/go-collections/concurrent/list"
+	"github.com/stretchr/testify/require"
 )
 
-var _ = Describe("List", func() {
-	It("can create", func() {
+func TestList(t *testing.T) {
+	t.Run("can_create", func(t *testing.T) {
 		list := list.New(1, 2, 3, 4)
-		Expect(list.Length()).To(Equal(4))
+		require.Equal(t, 4, list.Length())
 	})
-	It("can append", func() {
+	t.Run("can append", func(t *testing.T) {
 		list := list.New()
 		list.Append(1)
-		Expect(list.Length()).To(Equal(1))
-		Expect(list.Get(0)).To(Equal(1))
+		require.Equal(t, 1, list.Length())
+		require.Equal(t, 1, list.Get(0))
 	})
-	It("can remove", func() {
+	t.Run("can remove", func(t *testing.T) {
 		list := list.New(1, 3, 4, 5)
 		list.Remove(4)
-		Expect(list.Length()).To(Equal(3))
-		Expect(list.Get(0)).To(Equal(1))
-		Expect(list.Get(1)).To(Equal(3))
-		Expect(list.Get(2)).To(Equal(5))
+		require.Equal(t, 3, list.Length())
+		require.Equal(t, 1, list.Get(0))
+		require.Equal(t, 3, list.Get(1))
+		require.Equal(t, 5, list.Get(2))
 	})
-	It("can clear", func() {
+	t.Run("can clear", func(t *testing.T) {
 		list := list.New(1, 3, 4, 5)
 		list.Clear()
-		Expect(list.Length()).To(Equal(0))
+		require.Equal(t, 0, list.Length())
 	})
-	When("item in list", func() {
-		It("returns true", func() {
-			list := list.New(1, 2, 3, 4, 5, 6)
-			Expect(list.Contains(3)).To(BeTrue())
-		})
+
+	t.Run("contains_item", func(t *testing.T) {
+		list := list.New(1, 2, 3, 4, 5, 6)
+		require.True(t, list.Contains(3))
 	})
-	When("item missing", func() {
-		It("returns false", func() {
-			list := list.New(1, 2, 3, 4, 5, 6)
-			Expect(list.Contains(10)).To(BeFalse())
-		})
+
+	t.Run("missing_item", func(t *testing.T) {
+		list := list.New(1, 2, 3, 4, 5, 6)
+		require.False(t, list.Contains(10))
 	})
-	It("can return indexof", func() {
+
+	t.Run("index_of", func(t *testing.T) {
 		list := list.New(1, 2, 3, 4, 5)
 		index := list.IndexOf(2)
-		Expect(index).To(Equal(1))
+		require.Equal(t, 1, index)
 	})
-	It("can run foreach", func() {
+
+	t.Run("for_each", func(t *testing.T) {
 		list := list.New(1, 2, 3, 4, 5)
 		sum := 0
-		list.ForEach(func(item interface{}) {
+		list.ForEach(func(item any) {
 			sum += item.(int)
 		})
-		Expect(sum).To(Equal(15))
+		require.Equal(t, 15, sum)
 	})
-	It("can get", func() {
+
+	t.Run("get", func(t *testing.T) {
 		list := list.New(1, 3, 4, 5, 6)
 		item := list.Get(3)
-		Expect(item).To(Equal(5))
+		require.Equal(t, 5, item)
 	})
-	It("can set", func() {
+
+	t.Run("set", func(t *testing.T) {
 		list := list.New(1, 3, 4, 5, 6)
 		list.Set(0, 10)
 		item := list.Get(0)
-		Expect(item).To(Equal(10))
+		require.Equal(t, 10, item)
 	})
-})
+}
